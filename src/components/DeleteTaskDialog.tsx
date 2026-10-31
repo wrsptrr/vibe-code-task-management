@@ -33,7 +33,11 @@ export function DeleteTaskDialog({
           <Button variant="outline" onClick={onCancel}>
             Batal
           </Button>
-          <Button variant="destructive" onClick={() => task && onConfirm(task)}>
+          <Button
+            variant="destructive"
+            className="bg-destructive text-white hover:bg-destructive/90"
+            onClick={() => task && onConfirm(task)}
+          >
             Hapus
           </Button>
         </DialogFooter>

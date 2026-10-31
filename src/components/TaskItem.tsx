@@ -78,7 +78,7 @@ export function TaskItem({ task, onAdvance, onEdit, onDelete }: TaskItemProps) {
             <Pencil />
           </Button>
           <Button
-            variant="ghost"
+            variant="destructive"
             size="icon-sm"
             aria-label="Hapus tugas"
             onClick={() => onDelete(task)}
