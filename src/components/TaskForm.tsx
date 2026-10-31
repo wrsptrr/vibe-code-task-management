@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import type { Task, TaskInput, TaskPriority, TaskStatus } from "@/types/task"
+import { toDateTimeInputValue } from "@/utils/taskDate"
 import {
   PRIORITY_LABELS,
   PRIORITY_OPTIONS,
@@ -31,7 +32,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   const [priority, setPriority] = useState<TaskPriority>(
     task?.priority ?? "medium",
   )
-  const [dueDate, setDueDate] = useState(task?.dueDate ?? "")
+  const [dueDate, setDueDate] = useState(toDateTimeInputValue(task?.dueDate))
   const [error, setError] = useState("")
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -120,7 +121,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
         <Label htmlFor="task-due-date">Deadline</Label>
         <Input
           id="task-due-date"
-          type="date"
+          type="datetime-local"
           value={dueDate}
           onChange={(event) => setDueDate(event.target.value)}
         />

@@ -25,7 +25,7 @@ describe("TaskForm", () => {
       target: { value: " Belajar " },
     })
     fireEvent.change(screen.getByLabelText("Deadline"), {
-      target: { value: "2026-06-01" },
+      target: { value: "2026-06-01T14:30" },
     })
     fireEvent.click(screen.getByRole("button", { name: "Simpan" }))
     expect(onSubmit).toHaveBeenCalledWith({
@@ -33,8 +33,22 @@ describe("TaskForm", () => {
       description: undefined,
       status: "todo",
       priority: "medium",
-      dueDate: "2026-06-01",
+      dueDate: "2026-06-01T14:30",
     })
+  })
+
+  it("prefills legacy date-only deadlines with midnight when editing", () => {
+    const task = {
+      id: "1",
+      title: "Old",
+      status: "todo" as const,
+      priority: "low" as const,
+      dueDate: "2026-06-01",
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    }
+    render(<TaskForm task={task} onSubmit={vi.fn()} onCancel={vi.fn()} />)
+    expect(screen.getByLabelText("Deadline")).toHaveValue("2026-06-01T00:00")
   })
 
   it("calls onCancel", () => {
