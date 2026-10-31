@@ -3,6 +3,7 @@ import { AppNav } from "@/components/AppNav"
 import { CompletedTaskList } from "@/components/CompletedTaskList"
 import { ReportPeriodTabs } from "@/components/ReportPeriodTabs"
 import { ReportSummary } from "@/components/ReportSummary"
+import { ThemeToggle } from "@/components/ThemeToggle"
 import { StatusChart } from "@/components/StatusChart"
 import { useTasks } from "@/hooks/useTasks"
 import {
@@ -29,7 +30,10 @@ export function ReportPage() {
     <main className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Report</h1>
-        <AppNav />
+        <div className="flex items-center gap-1">
+          <AppNav />
+          <ThemeToggle />
+        </div>
       </div>
       <ReportPeriodTabs
         period={period}
