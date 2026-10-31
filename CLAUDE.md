@@ -2,21 +2,13 @@
 
 Panduan untuk Claude Code saat bekerja di repository ini.
 
+## Melakukan Perubahan Kode, File, Folder dan lain-lain
+
+- Baca file execute.md di folder docs
+
 ## Gambaran Proyek
 
-**Task Manajemen** — aplikasi untuk membuat, mengatur, dan memantau tugas.
-
-- **Tujuan:** <!-- TODO: masalah apa yang diselesaikan, untuk siapa -->
-- **Status:** Project sudah di-init (Vite + React + TS + shadcn), belum ada fitur
-
-### Fitur Utama
-
-<!-- TODO: sesuaikan -->
-
-- [ ] CRUD tugas (judul, deskripsi, status, prioritas, deadline)
-- [ ] Status tugas: `todo` → `in_progress` → `done`
-- [ ] Filter & pencarian tugas
-- [ ] Kategori / label / proyek
+- Baca file project.md di folder docs
 
 ## Tech Stack
 
@@ -37,6 +29,7 @@ task-manajemen/
 │   ├── components/   # Komponen UI yang dapat dipakai ulang
 │   ├── pages/        # Halaman / route
 │   ├── hooks/        # Logika bisnis
+│   ├── types/        # Tipe TypeScript bersama
 │   ├── services/     # pemanggilan API
 │   └── utils/        # Fungsi helper
 ├── tests/            # Unit & integration test
@@ -64,7 +57,8 @@ npm run lint
 # Tambah komponen shadcn
 npx shadcn@latest add <komponen>
 
-# Test: belum ada framework test
+# Jalankan unit test
+npm test
 ```
 
 ## Model Data
@@ -89,11 +83,10 @@ npx shadcn@latest add <komponen>
 ## Testing
 
 - Setiap fitur baru disertai test.
-- <!-- TODO: framework test & lokasi file test -->
+- Framework: Vitest + Testing Library (jsdom). File test di `tests/`, mirror struktur `src/`, nama `*.test.ts(x)`.
 
 ## Catatan untuk Claude
 
 - Bahasa komunikasi: Bahasa Indonesia.
 - Bahasa di code: English
-- Tanyakan dulu sebelum menambah dependency baru atau mengubah struktur folder.
 - Perbarui file ini bila tech stack, struktur, atau perintah berubah.
