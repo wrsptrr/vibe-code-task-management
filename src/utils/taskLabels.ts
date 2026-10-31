@@ -23,6 +23,14 @@ export const STATUS_STYLES: Record<TaskStatus, string> = {
   done: `${BADGE_BASE} bg-green-100 text-green-700 hover:bg-green-100 hover:text-green-700 dark:bg-green-500/20 dark:text-green-300 dark:hover:bg-green-500/20 dark:hover:text-green-300`,
 }
 
+// Hex values of the badge text colors in STATUS_STYLES (light: *-700, dark: *-300).
+// Keep both in sync; Tailwind needs the class names above as literal strings.
+export const STATUS_COLORS: Record<TaskStatus, { light: string; dark: string }> = {
+  todo: { light: "#334155", dark: "#cbd5e1" },
+  in_progress: { light: "#1d4ed8", dark: "#93c5fd" },
+  done: { light: "#15803d", dark: "#86efac" },
+}
+
 export const PRIORITY_STYLES: Record<TaskPriority, string> = {
   low: `${BADGE_BASE} bg-emerald-100 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300`,
   medium: `${BADGE_BASE} bg-amber-100 text-amber-700 hover:bg-amber-100 hover:text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 dark:hover:bg-amber-500/20 dark:hover:text-amber-300`,

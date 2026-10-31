@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { loadTasks, saveTasks } from "@/services/taskStorage"
 import type { Task, TaskInput, TaskStatus } from "@/types/task"
+import { withStatus } from "@/utils/taskStatus"
 
 const NEXT_STATUS: Record<TaskStatus, TaskStatus> = {
   todo: "in_progress",
@@ -29,6 +30,7 @@ export function useTasks() {
       id: crypto.randomUUID(),
       createdAt: now,
       updatedAt: now,
+      completedAt: input.status === "done" ? now : undefined,
     }
     setTasks((prev) => [task, ...prev])
   }, [])
@@ -38,12 +40,17 @@ export function useTasks() {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id
-          ? {
-              ...task,
-              ...patch,
-              title: patch.title !== undefined ? patch.title.trim() : task.title,
-              updatedAt: now,
-            }
+          ? withStatus(
+              {
+                ...task,
+                ...patch,
+                title:
+                  patch.title !== undefined ? patch.title.trim() : task.title,
+              },
+              patch.status ?? task.status,
+              now,
+              task,
+            )
           : task,
       ),
     )
@@ -58,7 +65,7 @@ export function useTasks() {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id && task.status !== "done"
-          ? { ...task, status: NEXT_STATUS[task.status], updatedAt: now }
+          ? withStatus(task, NEXT_STATUS[task.status], now)
           : task,
       ),
     )
@@ -69,7 +76,7 @@ export function useTasks() {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id && task.status !== "todo"
-          ? { ...task, status: PREVIOUS_STATUS[task.status], updatedAt: now }
+          ? withStatus(task, PREVIOUS_STATUS[task.status], now)
           : task,
       ),
     )
