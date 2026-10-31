@@ -16,7 +16,8 @@ import type { Task, TaskInput } from "@/types/task"
 import { filterTasks, type TaskFilterOptions } from "@/utils/taskFilter"
 
 export function HomePage() {
-  const { tasks, addTask, updateTask, deleteTask, advanceStatus } = useTasks()
+  const { tasks, addTask, updateTask, deleteTask, advanceStatus, revertStatus } =
+    useTasks()
   const [filters, setFilters] = useState<TaskFilterOptions>({
     query: "",
     status: "all",
@@ -63,6 +64,7 @@ export function HomePage() {
         tasks={visibleTasks}
         hasAnyTask={tasks.length > 0}
         onAdvance={advanceStatus}
+        onRevert={revertStatus}
         onEdit={openEdit}
         onDelete={setDeletingTask}
       />

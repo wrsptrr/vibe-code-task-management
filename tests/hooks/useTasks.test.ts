@@ -65,6 +65,24 @@ describe("useTasks", () => {
     expect(result.current.tasks[0].status).toBe("done")
   })
 
+  it("reverts status done → in_progress → todo and stops at todo", () => {
+    const { result } = setup()
+    act(() =>
+      result.current.addTask({ title: "A", status: "done", priority: "low" }),
+    )
+    const id = result.current.tasks[0].id
+    vi.setSystemTime(new Date("2026-01-02T00:00:00.000Z"))
+    act(() => result.current.revertStatus(id))
+    expect(result.current.tasks[0].status).toBe("in_progress")
+    expect(result.current.tasks[0].updatedAt).toBe("2026-01-02T00:00:00.000Z")
+    act(() => result.current.revertStatus(id))
+    expect(result.current.tasks[0].status).toBe("todo")
+    vi.setSystemTime(new Date("2026-01-03T00:00:00.000Z"))
+    act(() => result.current.revertStatus(id))
+    expect(result.current.tasks[0].status).toBe("todo")
+    expect(result.current.tasks[0].updatedAt).toBe("2026-01-02T00:00:00.000Z")
+  })
+
   it("persists tasks to localStorage and restores them", () => {
     const first = setup()
     act(() =>

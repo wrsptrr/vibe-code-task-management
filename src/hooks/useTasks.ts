@@ -8,6 +8,12 @@ const NEXT_STATUS: Record<TaskStatus, TaskStatus> = {
   done: "done",
 }
 
+const PREVIOUS_STATUS: Record<TaskStatus, TaskStatus> = {
+  todo: "todo",
+  in_progress: "todo",
+  done: "in_progress",
+}
+
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks)
 
@@ -58,5 +64,16 @@ export function useTasks() {
     )
   }, [])
 
-  return { tasks, addTask, updateTask, deleteTask, advanceStatus }
+  const revertStatus = useCallback((id: string) => {
+    const now = new Date().toISOString()
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id && task.status !== "todo"
+          ? { ...task, status: PREVIOUS_STATUS[task.status], updatedAt: now }
+          : task,
+      ),
+    )
+  }, [])
+
+  return { tasks, addTask, updateTask, deleteTask, advanceStatus, revertStatus }
 }

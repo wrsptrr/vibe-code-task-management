@@ -1,4 +1,4 @@
-import { ArrowRight, Pencil, Trash2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Pencil, Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,11 +14,18 @@ import {
 interface TaskItemProps {
   task: Task
   onAdvance: (id: string) => void
+  onRevert: (id: string) => void
   onEdit: (task: Task) => void
   onDelete: (task: Task) => void
 }
 
-export function TaskItem({ task, onAdvance, onEdit, onDelete }: TaskItemProps) {
+export function TaskItem({
+  task,
+  onAdvance,
+  onRevert,
+  onEdit,
+  onDelete,
+}: TaskItemProps) {
   const overdue = isOverdue(task)
 
   return (
@@ -59,6 +66,16 @@ export function TaskItem({ task, onAdvance, onEdit, onDelete }: TaskItemProps) {
           </div>
         </div>
         <div className="flex shrink-0 gap-1">
+          {task.status !== "todo" && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Mundur ke status sebelumnya"
+              onClick={() => onRevert(task.id)}
+            >
+              <ArrowLeft />
+            </Button>
+          )}
           {task.status !== "done" && (
             <Button
               variant="ghost"

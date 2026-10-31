@@ -5,6 +5,7 @@ interface TaskListProps {
   tasks: Task[]
   hasAnyTask: boolean
   onAdvance: (id: string) => void
+  onRevert: (id: string) => void
   onEdit: (task: Task) => void
   onDelete: (task: Task) => void
 }
@@ -13,6 +14,7 @@ export function TaskList({
   tasks,
   hasAnyTask,
   onAdvance,
+  onRevert,
   onEdit,
   onDelete,
 }: TaskListProps) {
@@ -31,6 +33,7 @@ export function TaskList({
           key={task.id}
           task={task}
           onAdvance={onAdvance}
+          onRevert={onRevert}
           onEdit={onEdit}
           onDelete={onDelete}
         />
