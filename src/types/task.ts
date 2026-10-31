@@ -10,6 +10,7 @@ export interface Task {
   dueDate?: string
   createdAt: string
   updatedAt: string
+  completedAt?: string
 }
 
 export type TaskInput = Pick<Task, "title" | "status" | "priority"> &

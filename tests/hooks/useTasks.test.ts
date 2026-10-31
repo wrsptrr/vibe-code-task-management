@@ -83,6 +83,43 @@ describe("useTasks", () => {
     expect(result.current.tasks[0].updatedAt).toBe("2026-01-02T00:00:00.000Z")
   })
 
+  it("sets completedAt when a task reaches done and clears it on revert", () => {
+    const { result } = setup()
+    act(() =>
+      result.current.addTask({ title: "A", status: "in_progress", priority: "low" }),
+    )
+    const id = result.current.tasks[0].id
+    expect(result.current.tasks[0].completedAt).toBeUndefined()
+    act(() => result.current.advanceStatus(id))
+    expect(result.current.tasks[0].completedAt).toBe("2026-01-01T00:00:00.000Z")
+    vi.setSystemTime(new Date("2026-01-02T00:00:00.000Z"))
+    act(() => result.current.revertStatus(id))
+    expect(result.current.tasks[0].completedAt).toBeUndefined()
+  })
+
+  it("sets completedAt when adding a task that is already done", () => {
+    const { result } = setup()
+    act(() =>
+      result.current.addTask({ title: "A", status: "done", priority: "low" }),
+    )
+    expect(result.current.tasks[0].completedAt).toBe("2026-01-01T00:00:00.000Z")
+  })
+
+  it("sets and keeps completedAt through updateTask", () => {
+    const { result } = setup()
+    act(() =>
+      result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+    )
+    const id = result.current.tasks[0].id
+    act(() => result.current.updateTask(id, { status: "done" }))
+    expect(result.current.tasks[0].completedAt).toBe("2026-01-01T00:00:00.000Z")
+    vi.setSystemTime(new Date("2026-01-05T00:00:00.000Z"))
+    act(() => result.current.updateTask(id, { title: "B" }))
+    expect(result.current.tasks[0].completedAt).toBe("2026-01-01T00:00:00.000Z")
+    act(() => result.current.updateTask(id, { status: "todo" }))
+    expect(result.current.tasks[0].completedAt).toBeUndefined()
+  })
+
   it("persists tasks to localStorage and restores them", () => {
     const first = setup()
     act(() =>

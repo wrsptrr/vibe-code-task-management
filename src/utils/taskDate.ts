@@ -14,6 +14,15 @@ export function hasDueTime(dueDate: string): boolean {
   return dueDate.length > DATE_LENGTH
 }
 
+// Parses "YYYY-MM-DD" or "YYYY-MM-DDTHH:mm" as local time (no UTC shift).
+export function parseDueDate(dueDate: string): Date {
+  const [datePart, timePart] = dueDate.split("T")
+  const [year, month, day] = datePart.split("-").map(Number)
+  if (!timePart) return new Date(year, month - 1, day)
+  const [hour, minute] = timePart.split(":").map(Number)
+  return new Date(year, month - 1, day, hour, minute)
+}
+
 export function isOverdue(
   task: Pick<Task, "dueDate" | "status">,
   now: Date = new Date(),

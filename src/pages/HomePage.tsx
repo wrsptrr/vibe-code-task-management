@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Plus } from "lucide-react"
+import { AppNav } from "@/components/AppNav"
 import { DeleteTaskDialog } from "@/components/DeleteTaskDialog"
 import { TaskFilters } from "@/components/TaskFilters"
 import { TaskForm } from "@/components/TaskForm"
@@ -55,6 +56,9 @@ export function HomePage() {
     <main className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Task Manajemen</h1>
+        <AppNav />
+      </div>
+      <div className="flex justify-end">
         <Button onClick={openCreate}>
           <Plus /> Tambah Tugas
         </Button>
