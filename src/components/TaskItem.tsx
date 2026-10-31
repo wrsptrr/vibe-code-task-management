@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Task } from "@/types/task"
 import { formatDueDate, isOverdue } from "@/utils/taskDate"
-import { PRIORITY_LABELS, STATUS_LABELS } from "@/utils/taskLabels"
+import {
+  PRIORITY_LABELS,
+  PRIORITY_STYLES,
+  STATUS_LABELS,
+  STATUS_STYLES,
+} from "@/utils/taskLabels"
 
 interface TaskItemProps {
   task: Task
@@ -33,8 +38,12 @@ export function TaskItem({ task, onAdvance, onEdit, onDelete }: TaskItemProps) {
             <p className="text-sm text-muted-foreground">{task.description}</p>
           )}
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{STATUS_LABELS[task.status]}</Badge>
-            <Badge variant="outline">{PRIORITY_LABELS[task.priority]}</Badge>
+            <Badge variant="ghost" className={STATUS_STYLES[task.status]}>
+              {STATUS_LABELS[task.status]}
+            </Badge>
+            <Badge variant="ghost" className={PRIORITY_STYLES[task.priority]}>
+              {PRIORITY_LABELS[task.priority]}
+            </Badge>
             {task.dueDate && (
               <span
                 className={
