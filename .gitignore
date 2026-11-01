@@ -25,3 +25,6 @@ dist-ssr
 
 # AI execution prompt (not tracked)
 docs/prompt.md
+
+# AI plans (not tracked)
+docs/plan/
