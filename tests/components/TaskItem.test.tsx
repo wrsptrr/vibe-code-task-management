@@ -10,7 +10,7 @@ function makeTask(status: TaskStatus): Task {
     priority: "medium",
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
-  }
+  } as Task
 }
 
 function renderItem(status: TaskStatus, onRevert = vi.fn()) {

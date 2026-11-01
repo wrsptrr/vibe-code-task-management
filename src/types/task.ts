@@ -4,14 +4,16 @@ export type TaskPriority = "low" | "medium" | "high"
 export interface Task {
   id: string
   title: string
-  description?: string
+  description: string
   status: TaskStatus
   priority: TaskPriority
-  dueDate?: string
+  dueDate: string
   createdAt: string
   updatedAt: string
   completedAt?: string
 }
 
-export type TaskInput = Pick<Task, "title" | "status" | "priority"> &
-  Partial<Pick<Task, "description" | "dueDate">>
+export type TaskInput = Pick<
+  Task,
+  "title" | "description" | "status" | "priority" | "dueDate"
+>

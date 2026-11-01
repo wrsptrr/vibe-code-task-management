@@ -18,7 +18,7 @@ describe("useTasks", () => {
   it("adds a task with generated fields and a trimmed title", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "  Hello ", status: "todo", priority: "low" }),
+      result.current.addTask({ title: "  Hello ", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     const [task] = result.current.tasks
     expect(task.title).toBe("Hello")
@@ -30,7 +30,7 @@ describe("useTasks", () => {
   it("updates a task and refreshes updatedAt", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     const id = result.current.tasks[0].id
     vi.setSystemTime(new Date("2026-01-02T00:00:00.000Z"))
@@ -45,7 +45,7 @@ describe("useTasks", () => {
   it("deletes a task", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     act(() => result.current.deleteTask(result.current.tasks[0].id))
     expect(result.current.tasks).toEqual([])
@@ -54,7 +54,7 @@ describe("useTasks", () => {
   it("advances status todo → in_progress → done and stops at done", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     const id = result.current.tasks[0].id
     act(() => result.current.advanceStatus(id))
@@ -68,7 +68,7 @@ describe("useTasks", () => {
   it("reverts status done → in_progress → todo and stops at todo", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "done", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "done", priority: "low" }),
     )
     const id = result.current.tasks[0].id
     vi.setSystemTime(new Date("2026-01-02T00:00:00.000Z"))
@@ -86,7 +86,7 @@ describe("useTasks", () => {
   it("sets completedAt when a task reaches done and clears it on revert", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "in_progress", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "in_progress", priority: "low" }),
     )
     const id = result.current.tasks[0].id
     expect(result.current.tasks[0].completedAt).toBeUndefined()
@@ -100,7 +100,7 @@ describe("useTasks", () => {
   it("sets completedAt when adding a task that is already done", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "done", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "done", priority: "low" }),
     )
     expect(result.current.tasks[0].completedAt).toBe("2026-01-01T00:00:00.000Z")
   })
@@ -108,7 +108,7 @@ describe("useTasks", () => {
   it("sets and keeps completedAt through updateTask", () => {
     const { result } = setup()
     act(() =>
-      result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+      result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     const id = result.current.tasks[0].id
     act(() => result.current.updateTask(id, { status: "done" }))
@@ -123,7 +123,7 @@ describe("useTasks", () => {
   it("persists tasks to localStorage and restores them", () => {
     const first = setup()
     act(() =>
-      first.result.current.addTask({ title: "A", status: "todo", priority: "low" }),
+      first.result.current.addTask({ title: "A", description: "Desc", dueDate: "2026-06-30", status: "todo", priority: "low" }),
     )
     expect(loadTasks()).toHaveLength(1)
     first.unmount()

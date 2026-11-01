@@ -19,6 +19,20 @@ import {
   STATUS_OPTIONS,
 } from "@/utils/taskLabels"
 
+interface TaskFormErrors {
+  title?: string
+  description?: string
+  dueDate?: string
+}
+
+function RequiredMark() {
+  return (
+    <span aria-hidden="true" className="text-destructive">
+      *
+    </span>
+  )
+}
+
 interface TaskFormProps {
   task?: Task
   onSubmit: (input: TaskInput) => void
@@ -33,49 +47,76 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     task?.priority ?? "medium",
   )
   const [dueDate, setDueDate] = useState(toDateTimeInputValue(task?.dueDate))
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<TaskFormErrors>({})
+
+  function clearError(field: keyof TaskFormErrors) {
+    setErrors((current) => ({ ...current, [field]: undefined }))
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!title.trim()) {
-      setError("Judul wajib diisi")
+    const nextErrors: TaskFormErrors = {}
+    if (!title.trim()) nextErrors.title = "Judul wajib diisi"
+    if (!description.trim()) nextErrors.description = "Deskripsi wajib diisi"
+    if (!dueDate) nextErrors.dueDate = "Deadline wajib diisi"
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
       return
     }
     onSubmit({
       title: title.trim(),
-      description: description.trim() || undefined,
+      description: description.trim(),
       status,
       priority,
-      dueDate: dueDate || undefined,
+      dueDate,
     })
   }
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-3" noValidate>
       <div className="grid gap-1.5">
-        <Label htmlFor="task-title">Judul</Label>
+        <Label htmlFor="task-title">
+          Judul <RequiredMark />
+        </Label>
         <Input
           id="task-title"
           value={title}
-          aria-invalid={error ? true : undefined}
+          required
+          aria-required="true"
+          aria-invalid={errors.title ? true : undefined}
           onChange={(event) => {
             setTitle(event.target.value)
-            setError("")
+            clearError("title")
           }}
         />
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {errors.title && (
+          <p className="text-xs text-destructive">{errors.title}</p>
+        )}
       </div>
       <div className="grid gap-1.5">
-        <Label htmlFor="task-description">Deskripsi</Label>
+        <Label htmlFor="task-description">
+          Deskripsi <RequiredMark />
+        </Label>
         <Textarea
           id="task-description"
           value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          required
+          aria-required="true"
+          aria-invalid={errors.description ? true : undefined}
+          onChange={(event) => {
+            setDescription(event.target.value)
+            clearError("description")
+          }}
         />
+        {errors.description && (
+          <p className="text-xs text-destructive">{errors.description}</p>
+        )}
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="grid gap-1.5">
-          <Label>Status</Label>
+          <Label>
+            Status <RequiredMark />
+          </Label>
           <Select
             value={status}
             onValueChange={(value) => value && setStatus(value as TaskStatus)}
@@ -95,7 +136,9 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
           </Select>
         </div>
         <div className="grid gap-1.5">
-          <Label>Prioritas</Label>
+          <Label>
+            Prioritas <RequiredMark />
+          </Label>
           <Select
             value={priority}
             onValueChange={(value) =>
@@ -118,13 +161,24 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
         </div>
       </div>
       <div className="grid gap-1.5">
-        <Label htmlFor="task-due-date">Deadline</Label>
+        <Label htmlFor="task-due-date">
+          Deadline <RequiredMark />
+        </Label>
         <Input
           id="task-due-date"
           type="datetime-local"
           value={dueDate}
-          onChange={(event) => setDueDate(event.target.value)}
+          required
+          aria-required="true"
+          aria-invalid={errors.dueDate ? true : undefined}
+          onChange={(event) => {
+            setDueDate(event.target.value)
+            clearError("dueDate")
+          }}
         />
+        {errors.dueDate && (
+          <p className="text-xs text-destructive">{errors.dueDate}</p>
+        )}
       </div>
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel}>
