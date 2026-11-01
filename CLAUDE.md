@@ -65,7 +65,7 @@ npm test
 
 <!-- TODO: sesuaikan -->
 
-**Task** | Field | Tipe | Keterangan | |-------------|----------|-------------------------------------| | id | string | ID unik | | title | string | Wajib | | description | string | Opsional | | status | enum | `todo` / `in_progress` / `done` | | priority | enum | `low` / `medium` / `high` | | dueDate | date | Opsional | | createdAt | datetime | Otomatis | | updatedAt | datetime | Otomatis |
+**Task** | Field | Tipe | Keterangan | |-------------|----------|-------------------------------------| | id | string | ID unik | | title | string | Wajib | | description | string | Wajib | | status | enum | `todo` / `in_progress` / `done` | | priority | enum | `low` / `medium` / `high` | | dueDate | date | Wajib | | createdAt | datetime | Otomatis | | updatedAt | datetime | Otomatis |
 
 ## Konvensi Kode
 

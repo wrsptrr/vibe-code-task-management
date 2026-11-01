@@ -20,7 +20,7 @@ describe("isOverdue", () => {
   })
 
   it("is false without a due date", () => {
-    expect(isOverdue({ status: "todo" }, now)).toBe(false)
+    expect(isOverdue({ dueDate: "", status: "todo" }, now)).toBe(false)
   })
 })
 
