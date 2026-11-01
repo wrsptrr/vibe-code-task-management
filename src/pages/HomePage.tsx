@@ -13,8 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useTaskDialogs } from "@/hooks/useTaskDialogs"
 import { useTasks } from "@/hooks/useTasks"
-import type { Task, TaskInput } from "@/types/task"
 import {
   filterTasks,
   getNavigablePeriod,
@@ -40,9 +40,18 @@ export function HomePage() {
     status: "all",
     priority: "all",
   })
-  const [formOpen, setFormOpen] = useState(false)
-  const [editingTask, setEditingTask] = useState<Task | null>(null)
-  const [deletingTask, setDeletingTask] = useState<Task | null>(null)
+  const {
+    formOpen,
+    setFormOpen,
+    editingTask,
+    deletingTask,
+    openCreate,
+    openEdit,
+    submitForm,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
+  } = useTaskDialogs({ addTask, updateTask, deleteTask })
 
   const visibleTasks = useMemo(
     () =>
@@ -51,22 +60,6 @@ export function HomePage() {
       ),
     [tasks, filters],
   )
-
-  function openCreate() {
-    setEditingTask(null)
-    setFormOpen(true)
-  }
-
-  function openEdit(task: Task) {
-    setEditingTask(task)
-    setFormOpen(true)
-  }
-
-  function handleSubmit(input: TaskInput) {
-    if (editingTask) updateTask(editingTask.id, input)
-    else addTask(input)
-    setFormOpen(false)
-  }
 
   return (
     <main className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-8">
@@ -93,7 +86,7 @@ export function HomePage() {
         onAdvance={advanceStatus}
         onRevert={revertStatus}
         onEdit={openEdit}
-        onDelete={setDeletingTask}
+        onDelete={requestDelete}
       />
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
         <DialogContent>
@@ -105,18 +98,15 @@ export function HomePage() {
           <TaskForm
             key={editingTask?.id ?? "new"}
             task={editingTask ?? undefined}
-            onSubmit={handleSubmit}
+            onSubmit={submitForm}
             onCancel={() => setFormOpen(false)}
           />
         </DialogContent>
       </Dialog>
       <DeleteTaskDialog
         task={deletingTask}
-        onConfirm={(task) => {
-          deleteTask(task.id)
-          setDeletingTask(null)
-        }}
-        onCancel={() => setDeletingTask(null)}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
       />
     </main>
   )
