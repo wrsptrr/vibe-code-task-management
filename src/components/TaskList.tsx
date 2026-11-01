@@ -4,6 +4,7 @@ import type { Task } from "@/types/task"
 interface TaskListProps {
   tasks: Task[]
   hasAnyTask: boolean
+  emptyMessage?: string
   onAdvance: (id: string) => void
   onRevert: (id: string) => void
   onEdit: (task: Task) => void
@@ -13,6 +14,7 @@ interface TaskListProps {
 export function TaskList({
   tasks,
   hasAnyTask,
+  emptyMessage = "Tidak ada tugas yang cocok",
   onAdvance,
   onRevert,
   onEdit,
@@ -21,7 +23,7 @@ export function TaskList({
   if (tasks.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted-foreground">
-        {hasAnyTask ? "Tidak ada tugas yang cocok" : "Belum ada tugas"}
+        {hasAnyTask ? emptyMessage : "Belum ada tugas"}
       </p>
     )
   }

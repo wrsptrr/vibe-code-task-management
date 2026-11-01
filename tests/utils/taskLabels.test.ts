@@ -1,5 +1,10 @@
 import type { TaskStatus } from "@/types/task"
-import { STATUS_COLORS, STATUS_STYLES } from "@/utils/taskLabels"
+import {
+  DATE_RANGE_LABELS,
+  DATE_RANGE_OPTIONS,
+  STATUS_COLORS,
+  STATUS_STYLES,
+} from "@/utils/taskLabels"
 
 const HEX = /^#[0-9a-f]{6}$/i
 
@@ -21,4 +26,13 @@ describe("status colors", () => {
       expect(STATUS_STYLES[status]).toContain(` dark:text-${palette}-300 `)
     },
   )
+})
+
+describe("date range labels", () => {
+  it("has a label for every option", () => {
+    expect(DATE_RANGE_OPTIONS).toEqual(["today", "week", "overdue", "no_due", "all"])
+    for (const option of DATE_RANGE_OPTIONS) {
+      expect(DATE_RANGE_LABELS[option]).toBeTruthy()
+    }
+  })
 })
