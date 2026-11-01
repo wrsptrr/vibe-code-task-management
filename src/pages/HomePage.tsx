@@ -15,13 +15,28 @@ import {
 } from "@/components/ui/dialog"
 import { useTasks } from "@/hooks/useTasks"
 import type { Task, TaskInput } from "@/types/task"
-import { filterTasks, type TaskFilterOptions } from "@/utils/taskFilter"
+import {
+  filterTasks,
+  getNavigablePeriod,
+  isCurrentPeriod,
+  type TaskFilterOptions,
+} from "@/utils/taskFilter"
+
+function getEmptyMessage({ dateRange, anchor }: TaskFilterOptions): string {
+  if (!getNavigablePeriod(dateRange)) return "Tidak ada tugas yang cocok"
+  if (!isCurrentPeriod(dateRange, anchor)) return "Tidak ada tugas pada periode ini"
+  return dateRange === "today"
+    ? "Tidak ada tugas hari ini"
+    : "Tidak ada tugas minggu ini"
+}
 
 export function HomePage() {
   const { tasks, addTask, updateTask, deleteTask, advanceStatus, revertStatus } =
     useTasks()
   const [filters, setFilters] = useState<TaskFilterOptions>({
     query: "",
+    dateRange: "today",
+    anchor: new Date(),
     status: "all",
     priority: "all",
   })
@@ -62,15 +77,19 @@ export function HomePage() {
           <ThemeToggle />
         </div>
       </div>
-      <div className="flex justify-end">
-        <Button onClick={openCreate}>
-          <Plus /> Tambah Tugas
-        </Button>
-      </div>
-      <TaskFilters value={filters} onChange={setFilters} />
+      <TaskFilters
+        value={filters}
+        onChange={setFilters}
+        action={
+          <Button className="w-full sm:w-auto" onClick={openCreate}>
+            <Plus /> Tambah Tugas
+          </Button>
+        }
+      />
       <TaskList
         tasks={visibleTasks}
         hasAnyTask={tasks.length > 0}
+        emptyMessage={getEmptyMessage(filters)}
         onAdvance={advanceStatus}
         onRevert={revertStatus}
         onEdit={openEdit}

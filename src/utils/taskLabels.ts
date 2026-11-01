@@ -1,4 +1,5 @@
 import type { TaskPriority, TaskStatus } from "@/types/task"
+import type { DateRangeFilter } from "@/utils/taskFilter"
 
 export const STATUS_LABELS: Record<TaskStatus, string> = {
   todo: "Todo",
@@ -11,6 +12,16 @@ export const PRIORITY_LABELS: Record<TaskPriority, string> = {
   medium: "Medium",
   high: "High",
 }
+
+export const DATE_RANGE_LABELS: Record<DateRangeFilter, string> = {
+  today: "Hari ini",
+  week: "Minggu ini",
+  overdue: "Terlambat",
+  no_due: "Tanpa deadline",
+  all: "Semua tanggal",
+}
+
+export const DATE_RANGE_OPTIONS = Object.keys(DATE_RANGE_LABELS) as DateRangeFilter[]
 
 export const STATUS_OPTIONS = Object.keys(STATUS_LABELS) as TaskStatus[]
 export const PRIORITY_OPTIONS = Object.keys(PRIORITY_LABELS) as TaskPriority[]
